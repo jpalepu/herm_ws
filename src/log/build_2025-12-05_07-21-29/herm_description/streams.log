@@ -1,0 +1,33 @@
+[1.176s] Invoking command in '/home/jithin/herm_ws/src/herm_description': PYTHONPATH=/home/jithin/herm_ws/src/build/herm_description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/jithin/herm_ws/src/install/herm_description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/herm_description build --build-base /home/jithin/herm_ws/src/build/herm_description/build install --record /home/jithin/herm_ws/src/build/herm_description/install.log --single-version-externally-managed install_data
+[1.603s] running egg_info
+[1.604s] creating ../build/herm_description/herm_description.egg-info
+[1.604s] writing ../build/herm_description/herm_description.egg-info/PKG-INFO
+[1.605s] writing dependency_links to ../build/herm_description/herm_description.egg-info/dependency_links.txt
+[1.605s] writing entry points to ../build/herm_description/herm_description.egg-info/entry_points.txt
+[1.605s] writing requirements to ../build/herm_description/herm_description.egg-info/requires.txt
+[1.605s] writing top-level names to ../build/herm_description/herm_description.egg-info/top_level.txt
+[1.606s] writing manifest file '../build/herm_description/herm_description.egg-info/SOURCES.txt'
+[1.609s] reading manifest file '../build/herm_description/herm_description.egg-info/SOURCES.txt'
+[1.610s] writing manifest file '../build/herm_description/herm_description.egg-info/SOURCES.txt'
+[1.610s] running build
+[1.610s] running build_py
+[1.610s] creating /home/jithin/herm_ws/src/build/herm_description/build
+[1.611s] creating /home/jithin/herm_ws/src/build/herm_description/build/lib
+[1.611s] creating /home/jithin/herm_ws/src/build/herm_description/build/lib/herm_description
+[1.611s] copying herm_description/__init__.py -> /home/jithin/herm_ws/src/build/herm_description/build/lib/herm_description
+[1.611s] running install
+[1.612s] running install_lib
+[1.613s] creating /home/jithin/herm_ws/src/install/herm_description/lib/python3.10/site-packages/herm_description
+[1.613s] copying /home/jithin/herm_ws/src/build/herm_description/build/lib/herm_description/__init__.py -> /home/jithin/herm_ws/src/install/herm_description/lib/python3.10/site-packages/herm_description
+[1.614s] byte-compiling /home/jithin/herm_ws/src/install/herm_description/lib/python3.10/site-packages/herm_description/__init__.py to __init__.cpython-310.pyc
+[1.615s] running install_data
+[1.615s] creating /home/jithin/herm_ws/src/install/herm_description/share/ament_index
+[1.615s] creating /home/jithin/herm_ws/src/install/herm_description/share/ament_index/resource_index
+[1.615s] creating /home/jithin/herm_ws/src/install/herm_description/share/ament_index/resource_index/packages
+[1.615s] copying resource/herm_description -> /home/jithin/herm_ws/src/install/herm_description/share/ament_index/resource_index/packages
+[1.615s] copying package.xml -> /home/jithin/herm_ws/src/install/herm_description/share/herm_description
+[1.615s] running install_egg_info
+[1.621s] Copying ../build/herm_description/herm_description.egg-info to /home/jithin/herm_ws/src/install/herm_description/lib/python3.10/site-packages/herm_description-0.0.0-py3.10.egg-info
+[1.622s] running install_scripts
+[1.658s] writing list of installed files to '/home/jithin/herm_ws/src/build/herm_description/install.log'
+[1.721s] Invoked command in '/home/jithin/herm_ws/src/herm_description' returned '0': PYTHONPATH=/home/jithin/herm_ws/src/build/herm_description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/jithin/herm_ws/src/install/herm_description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/herm_description build --build-base /home/jithin/herm_ws/src/build/herm_description/build install --record /home/jithin/herm_ws/src/build/herm_description/install.log --single-version-externally-managed install_data

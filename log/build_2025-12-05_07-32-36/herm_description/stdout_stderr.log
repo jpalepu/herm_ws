@@ -1,0 +1,18 @@
+running develop
+running egg_info
+writing herm_description.egg-info/PKG-INFO
+writing dependency_links to herm_description.egg-info/dependency_links.txt
+writing entry points to herm_description.egg-info/entry_points.txt
+writing requirements to herm_description.egg-info/requires.txt
+writing top-level names to herm_description.egg-info/top_level.txt
+reading manifest file 'herm_description.egg-info/SOURCES.txt'
+writing manifest file 'herm_description.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/jithin/herm_ws/install/herm_description/lib/python3.10/site-packages/herm-description.egg-link (link to .)
+
+Installed /home/jithin/herm_ws/build/herm_description
+running symlink_data
+symbolically linking /home/jithin/herm_ws/build/herm_description/resource/herm_description -> /home/jithin/herm_ws/install/herm_description/share/ament_index/resource_index/packages
+symbolically linking /home/jithin/herm_ws/build/herm_description/package.xml -> /home/jithin/herm_ws/install/herm_description/share/herm_description
+creating /home/jithin/herm_ws/install/herm_description/share/herm_description/urdf
+error: [Errno 2] No such file or directory: '/home/jithin/herm_ws/install/herm_description/share/herm_description/urdf/herm.urdf.xacro'

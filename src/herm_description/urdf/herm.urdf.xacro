@@ -1,0 +1,222 @@
+<?xml version="1.0"?>
+<robot name="HERM" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ===================== -->
+  <!--  ROBOT PARAMETERS     -->
+  <!-- ===================== -->
+  <xacro:property name="base_radius" value="0.17"/>   <!-- 34cm diameter -->
+  <xacro:property name="base_height" value="0.05"/>   <!-- 5cm tall -->
+  <xacro:property name="wheel_radius" value="0.065"/> <!-- 6.5cm radius -->
+  <xacro:property name="wheel_width"  value="0.02"/>  <!-- 2cm thick -->
+  <xacro:property name="caster_radius" value="0.03"/> <!-- 3cm caster sphere -->
+
+  <!-- ===================== -->
+  <!--  GLOBAL MATERIALS     -->
+  <!-- ===================== -->
+  <material name="black">
+    <color rgba="0.0 0.0 0.0 1.0"/>
+  </material>
+
+  <material name="gray">
+    <color rgba="0.5 0.5 0.5 1.0"/>
+  </material>
+
+  <material name="blue">
+    <color rgba="0.1 0.2 1.0 1.0"/>
+  </material>
+
+  <material name="red">
+    <color rgba="1.0 0.0 0.0 1.0"/>
+  </material>
+
+  <!-- ===================== -->
+  <!--      BASE LINK        -->
+  <!-- ===================== -->
+  <!-- Turtlebot-style round base -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <cylinder radius="${base_radius}" length="${base_height}"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <material name="gray"/>
+    </visual>
+
+    <collision>
+      <geometry>
+        <cylinder radius="${base_radius}" length="${base_height}"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </collision>
+
+    <inertial>
+      <mass value="6.0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia
+        ixx="0.15" ixy="0.0" ixz="0.0"
+        iyy="0.15" iyz="0.0"
+        izz="0.20"/>
+    </inertial>
+  </link>
+
+  <!-- ===================== -->
+  <!--    2WD DRIVE WHEELS   -->
+  <!-- ===================== -->
+
+  <!-- Wheel macro -->
+  <xacro:macro name="drive_wheel" params="name y">
+    <link name="${name}">
+      <visual>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+        <!-- Rotate so cylinder axis is along robot x -->
+        <origin xyz="0 0 0" rpy="0 1.5707 0"/>
+        <material name="black"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 1.5707 0"/>
+      </collision>
+
+      <inertial>
+        <mass value="0.3"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia
+          ixx="0.002" ixy="0.0" ixz="0.0"
+          iyy="0.002" iyz="0.0"
+          izz="0.002"/>
+      </inertial>
+    </link>
+
+    <!-- Continuous joint for differential drive -->
+    <joint name="${name}_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="${name}"/>
+      <!-- Place wheel on side at base radius, slightly below base -->
+      <origin xyz="0 ${y} -${base_height/2}" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- Left and right wheels -->
+  <xacro:drive_wheel name="left_wheel"  y="${ base_radius}"/>
+  <xacro:drive_wheel name="right_wheel" y="-${base_radius}"/>
+
+  <!-- ===================== -->
+  <!--      CASTER WHEEL     -->
+  <!-- ===================== -->
+
+  <link name="caster_wheel">
+    <visual>
+      <geometry>
+        <sphere radius="${caster_radius}"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <material name="black"/>
+    </visual>
+
+    <collision>
+      <geometry>
+        <sphere radius="${caster_radius}"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </collision>
+
+    <inertial>
+      <mass value="0.2"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia
+        ixx="0.001" ixy="0.0" ixz="0.0"
+        iyy="0.001" iyz="0.0"
+        izz="0.001"/>
+    </inertial>
+  </link>
+
+  <!-- Fixed caster behind the base center -->
+  <joint name="caster_wheel_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="caster_wheel"/>
+    <!-- put the caster at the rear, slightly under base -->
+    <origin xyz="-0.15 0 -${base_height/2 + caster_radius}" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ===================== -->
+  <!--        LiDAR          -->
+  <!-- ===================== -->
+
+  <link name="lidar_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.035" length="0.05"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <material name="red"/>
+    </visual>
+
+    <collision>
+      <geometry>
+        <cylinder radius="0.035" length="0.05"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </collision>
+
+    <inertial>
+      <mass value="0.15"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia
+        ixx="0.005" ixy="0.0" ixz="0.0"
+        iyy="0.005" iyz="0.0"
+        izz="0.005"/>
+    </inertial>
+  </link>
+
+  <!-- Mount LiDAR on top, slightly forward -->
+  <joint name="lidar_mount" type="fixed">
+    <parent link="base_link"/>
+    <child link="lidar_link"/>
+    <!-- on top of base, a bit forward on x -->
+    <origin xyz="0.08 0 ${base_height/2 + 0.05}" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ===================== -->
+  <!--    Insta360 Camera    -->
+  <!-- ===================== -->
+
+  <link name="camera_link">
+    <visual>
+      <geometry>
+        <box size="0.06 0.06 0.10"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <material name="blue"/>
+    </visual>
+
+    <collision>
+      <geometry>
+        <box size="0.06 0.06 0.10"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </collision>
+
+    <inertial>
+      <mass value="0.2"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia
+        ixx="0.01" ixy="0.0" ixz="0.0"
+        iyy="0.01" iyz="0.0"
+        izz="0.01"/>
+    </inertial>
+  </link>
+
+  <!-- Mount camera above LiDAR, slightly more forward -->
+  <joint name="camera_mount" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_link"/>
+    <origin xyz="0.10 0 ${base_height/2 + 0.18}" rpy="0 0 0"/>
+  </joint>
+
+</robot>

@@ -1,0 +1,15 @@
+package.xml
+setup.cfg
+setup.py
+../build/herm_description/herm_description.egg-info/PKG-INFO
+../build/herm_description/herm_description.egg-info/SOURCES.txt
+../build/herm_description/herm_description.egg-info/dependency_links.txt
+../build/herm_description/herm_description.egg-info/entry_points.txt
+../build/herm_description/herm_description.egg-info/requires.txt
+../build/herm_description/herm_description.egg-info/top_level.txt
+../build/herm_description/herm_description.egg-info/zip-safe
+herm_description/__init__.py
+resource/herm_description
+test/test_copyright.py
+test/test_flake8.py
+test/test_pep257.py
