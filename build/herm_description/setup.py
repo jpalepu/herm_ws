@@ -1,1 +1,0 @@
-/home/jithin/herm_ws/src/herm_description/setup.py

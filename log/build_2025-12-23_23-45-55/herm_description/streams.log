@@ -1,0 +1,30 @@
+[1.344s] Invoking command in '/home/jithin/herm_ws/build/herm_description': PYTHONPATH=/home/jithin/herm_ws/build/herm_description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/jithin/herm_ws/install/herm_description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --uninstall --editable --build-directory /home/jithin/herm_ws/build/herm_description/build
+[1.845s] running develop
+[2.153s] Removing /home/jithin/herm_ws/install/herm_description/lib/python3.10/site-packages/herm-description.egg-link (link to .)
+[2.236s] Invoked command in '/home/jithin/herm_ws/build/herm_description' returned '0': PYTHONPATH=/home/jithin/herm_ws/build/herm_description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/jithin/herm_ws/install/herm_description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --uninstall --editable --build-directory /home/jithin/herm_ws/build/herm_description/build
+[2.240s] Invoking command in '/home/jithin/herm_ws/src/herm_description': PYTHONPATH=/home/jithin/herm_ws/build/herm_description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/jithin/herm_ws/install/herm_description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/herm_description build --build-base /home/jithin/herm_ws/build/herm_description/build install --record /home/jithin/herm_ws/build/herm_description/install.log --single-version-externally-managed install_data --force
+[2.699s] running egg_info
+[2.700s] writing ../../build/herm_description/herm_description.egg-info/PKG-INFO
+[2.701s] writing dependency_links to ../../build/herm_description/herm_description.egg-info/dependency_links.txt
+[2.701s] writing entry points to ../../build/herm_description/herm_description.egg-info/entry_points.txt
+[2.702s] writing requirements to ../../build/herm_description/herm_description.egg-info/requires.txt
+[2.702s] writing top-level names to ../../build/herm_description/herm_description.egg-info/top_level.txt
+[2.709s] reading manifest file '../../build/herm_description/herm_description.egg-info/SOURCES.txt'
+[2.711s] writing manifest file '../../build/herm_description/herm_description.egg-info/SOURCES.txt'
+[2.711s] running build
+[2.712s] running build_py
+[2.712s] running install
+[2.712s] running install_lib
+[2.714s] creating /home/jithin/herm_ws/install/herm_description/lib/python3.10/site-packages/herm_description
+[2.714s] copying /home/jithin/herm_ws/build/herm_description/build/lib/herm_description/__init__.py -> /home/jithin/herm_ws/install/herm_description/lib/python3.10/site-packages/herm_description
+[2.715s] byte-compiling /home/jithin/herm_ws/install/herm_description/lib/python3.10/site-packages/herm_description/__init__.py to __init__.cpython-310.pyc
+[2.715s] running install_data
+[2.716s] copying resource/herm_description -> /home/jithin/herm_ws/install/herm_description/share/ament_index/resource_index/packages
+[2.716s] copying package.xml -> /home/jithin/herm_ws/install/herm_description/share/herm_description
+[2.716s] copying urdf/herm.urdf.xacro -> /home/jithin/herm_ws/install/herm_description/share/herm_description/urdf
+[2.716s] copying launch/display.launch.py -> /home/jithin/herm_ws/install/herm_description/share/herm_description/launch
+[2.716s] running install_egg_info
+[2.721s] Copying ../../build/herm_description/herm_description.egg-info to /home/jithin/herm_ws/install/herm_description/lib/python3.10/site-packages/herm_description-0.0.0-py3.10.egg-info
+[2.723s] running install_scripts
+[2.765s] writing list of installed files to '/home/jithin/herm_ws/build/herm_description/install.log'
+[2.842s] Invoked command in '/home/jithin/herm_ws/src/herm_description' returned '0': PYTHONPATH=/home/jithin/herm_ws/build/herm_description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/jithin/herm_ws/install/herm_description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/herm_description build --build-base /home/jithin/herm_ws/build/herm_description/build install --record /home/jithin/herm_ws/build/herm_description/install.log --single-version-externally-managed install_data --force
