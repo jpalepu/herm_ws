@@ -8,7 +8,7 @@ An open-source robotics project focused on improving human-agent collaboration a
 
 ## About This Project
 
-HERM started as an idea to build a robot that doesn't just perform tasks, but actually collaborates with humans in a meaningful way. The goal isn't to create another robot that follows commands — it's to explore how robots and AI agents can work together with people, understand context, and become genuine partners in real-world environments.
+HERM started as an idea to build a robot that doesn't just perform tasks, but actually collaborates with humans in a meaningful way. The goal isn't to create another robot that follows commands, it's to explore how robots and AI agents can work together with people, understand context, and become genuine partners in real-world environments.
 
 This is an open-source effort. All development, updates, experiments, and learnings will be shared here. Whether you're into robotics, AI, ROS2, or just curious about where this kind of tech is heading, you're welcome to follow along, contribute, or fork it for your own experiments.
 
@@ -26,9 +26,9 @@ HERM is an attempt to bridge that gap. It's built on accessible hardware, runs o
 
 ## The Robot
 
-HERM is a 4-wheeled skid-steer mobile robot with a layered platform design. It's compact enough to navigate indoor spaces but capable enough to carry sensors and compute for real autonomy.
+HERM is a 4-wheeled skid-steer mobile robot with a layered platform design. It's compact enough to navigate indoor spaces but capable enough to carry sensors and compute for real autonomy. (future dev version will be released in Q1 2026 so wait for it)
 
-### Hardware Stack
+### Hardware Stack (currently)
 
 | Component | What We're Using |
 |-----------|------------------|
