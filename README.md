@@ -97,14 +97,14 @@ ros2 launch herm_bringup sensors_test.launch.py
 
 ### Running in Simulation (Desktop)
 
-Don't have the hardware? No problem. The simulation package lets you test everything on your laptop or desktop.
+Don't have the hardware? No problem. The simulation package lets you test everything on your laptop or desktop using Gazebo Harmonic.
 
 ```bash
 git clone https://github.com/jpalepu/herm_ws.git
 cd herm_ws
 
-# Install Gazebo stuff
-sudo apt install ros-humble-gazebo-ros-pkgs ros-humble-teleop-twist-keyboard
+# Install Gazebo Harmonic and ROS2 bridge packages
+sudo apt install ros-humble-ros-gz ros-humble-teleop-twist-keyboard
 
 # Build
 colcon build
@@ -185,7 +185,7 @@ Or just open an issue if you have questions or suggestions.
 
 A few things worth knowing:
 
-- The simulation runs on Gazebo Classic, not Ignition/Gazebo Sim (yet)
+- The simulation runs on Gazebo Harmonic (the new Gazebo, not Gazebo Classic)
 - On Jetson, the camera uses GStreamer because the Insta360 streams MJPEG and standard V4L2 drivers don't handle it well
 - RPLidar A2M12 needs 256000 baud rate, not the default 115200
 

@@ -1,17 +1,19 @@
 # HERM Simulation
 
-Gazebo simulation package for the HERM robot. Use this to test on a desktop PC before deploying to the real robot.
+Gazebo Harmonic simulation package for the HERM robot. Use this to test on a desktop PC before deploying to the real robot.
 
 ## Requirements
 
 - ROS2 Humble
-- Gazebo Classic (comes with ros-humble-gazebo-ros-pkgs)
-- A machine with decent GPU (simulation is heavy)
+- Gazebo Harmonic (gz-harmonic)
+- ros_gz packages for ROS2-Gazebo bridge
+- A machine with decent GPU (simulation uses GPU-accelerated sensors)
 
 ## Installation
 
 ```bash
-sudo apt install ros-humble-gazebo-ros-pkgs ros-humble-teleop-twist-keyboard ros-humble-xacro
+# Install Gazebo Harmonic and ROS2 bridge packages
+sudo apt install ros-humble-ros-gz ros-humble-teleop-twist-keyboard ros-humble-xacro
 ```
 
 ## Quick Start
@@ -24,28 +26,19 @@ ros2 launch herm_simulation simulation.launch.py
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
 ```
 
-Or use the combined launch:
-```bash
-ros2 launch herm_simulation teleop_sim.launch.py
-```
-
 ## What's Simulated
 
 | Sensor/Actuator | Topic | Notes |
 |-----------------|-------|-------|
-| Differential drive | `/cmd_vel` → `/odom` | 4WD skid-steer |
-| RPLidar | `/scan` | 360°, 16m range |
+| Differential drive | `/cmd_vel` -> `/odom` | 4WD skid-steer |
+| RPLidar | `/scan` | 360deg, 16m range (GPU LiDAR) |
 | Camera | `/camera/image_raw` | 1280x720 @ 30fps |
 | IMU | `/imu/data` | 100Hz |
+| Joint States | `/joint_states` | Wheel positions |
 
 ## World
 
 The default world is a 10x10 meter enclosed room with some obstacles (boxes and cylinders). Good for testing navigation and obstacle avoidance.
-
-To use an empty world:
-```bash
-ros2 launch herm_simulation simulation.launch.py world:=/usr/share/gazebo-11/worlds/empty.world
-```
 
 ## Launch Arguments
 
@@ -53,15 +46,24 @@ ros2 launch herm_simulation simulation.launch.py world:=/usr/share/gazebo-11/wor
 |----------|---------|-------------|
 | `use_sim_time` | true | Use Gazebo clock |
 | `use_rviz` | true | Launch RViz |
-| `world` | herm_world.world | World file path |
+| `world` | herm_world.sdf | World file path |
 | `x_pose` | 0.0 | Spawn X position |
 | `y_pose` | 0.0 | Spawn Y position |
 
+## ROS-Gazebo Bridge
+
+The simulation uses `ros_gz_bridge` to translate between Gazebo transport topics and ROS2 topics:
+
+- Clock synchronization (`/clock`)
+- Sensor data (LiDAR, camera, IMU)
+- Control commands (`/cmd_vel`)
+- Odometry and TF
+
 ## Troubleshooting
 
-**Gazebo crashes on startup**
-- Make sure you have enough GPU memory
-- Try running `gazebo --verbose` to see errors
+**Gazebo fails to start**
+- Make sure Gazebo Harmonic is installed: `gz sim --version`
+- Check GPU drivers are working: `glxinfo | grep "OpenGL"`
 
 **Robot falls through floor**
 - Wait a few seconds before sending commands
@@ -71,17 +73,20 @@ ros2 launch herm_simulation simulation.launch.py world:=/usr/share/gazebo-11/wor
 - Check that Fixed Frame is set to `odom` or `base_footprint`
 - Make sure `/scan` topic is being published: `ros2 topic hz /scan`
 
+**Topics not appearing in ROS2**
+- Check the bridge is running: `ros2 node list | grep bridge`
+- Verify Gazebo topics: `gz topic -l`
+
 ## File Structure
 
 ```
 herm_simulation/
 ├── urdf/
-│   └── herm_gazebo.urdf.xacro  # Robot + Gazebo plugins
+│   └── herm_gazebo.urdf.xacro  # Robot + Gazebo Harmonic plugins
 ├── worlds/
-│   └── herm_world.world        # Test environment
+│   └── herm_world.sdf          # Test environment (SDF format)
 ├── config/
 │   └── simulation.rviz         # RViz layout
 └── launch/
-    ├── simulation.launch.py    # Main launch
-    └── teleop_sim.launch.py    # With keyboard control
+    └── simulation.launch.py    # Main launch
 ```
