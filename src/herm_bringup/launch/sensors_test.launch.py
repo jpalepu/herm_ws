@@ -35,6 +35,12 @@ def generate_launch_description():
         description='Camera device'
     )
 
+    imu_bus_arg = DeclareLaunchArgument(
+        'imu_bus',
+        default_value='7',
+        description='BNO055 I2C bus number'
+    )
+
     use_rviz_arg = DeclareLaunchArgument(
         'use_rviz',
         default_value='true',
@@ -44,6 +50,7 @@ def generate_launch_description():
     return LaunchDescription([
         lidar_port_arg,
         camera_device_arg,
+        imu_bus_arg,
         use_rviz_arg,
 
         # Robot State Publisher
@@ -72,7 +79,7 @@ def generate_launch_description():
                 'serial_baudrate': 256000,  # A2M12 uses 256000
                 'frame_id': 'base_scan',
                 'angle_compensate': True,
-                'scan_mode': 'Sensitivity'  # Options: Standard, Express, Boost, Sensitivity
+                'scan_mode': 'Standard'  # Try Standard mode first
             }]
         ),
 
@@ -94,6 +101,20 @@ def generate_launch_description():
                 ('image_raw', '/camera/image_raw'),
                 ('camera_info', '/camera/camera_info')
             ]
+        ),
+
+        # BNO055 IMU
+        Node(
+            package='herm_bringup',
+            executable='bno055_imu_node.py',
+            name='bno055_imu',
+            output='screen',
+            parameters=[{
+                'i2c_bus': LaunchConfiguration('imu_bus'),
+                'i2c_addr': 0x28,
+                'frame_id': 'imu_link',
+                'publish_rate': 100.0
+            }]
         ),
 
         # RViz

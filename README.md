@@ -34,9 +34,9 @@ HERM is a 4-wheeled skid-steer mobile robot with a layered platform design. It's
 |-----------|------------------|
 | Compute | NVIDIA Jetson Orin Nano |
 | Motors | Hiwonder 4-channel encoder motor driver |
-| LiDAR | RPLidar A2M12 |
-| Camera | Insta360 Link 2 (360° webcam) |
-| IMU | MPU3050 |
+| LiDAR | RPLidar A2M12 (360°, 16m range) |
+| Camera | Insta360 Link 2 (webcam, 1280x720) |
+| IMU | BNO055 (9-DOF with onboard fusion) |
 
 ### Physical Specs
 
@@ -130,11 +130,11 @@ This is an active project. Here's where things stand:
 | Feature | Status |
 |---------|--------|
 | Robot URDF (4WD, 3-layer design) | Done |
-| LiDAR integration | Done |
-| Camera integration | Done |
-| Gazebo simulation | Done |
+| LiDAR integration (RPLidar A2M12) | Done |
+| Camera integration (GStreamer) | Done |
+| IMU integration (BNO055) | Done |
+| Gazebo Harmonic simulation | Done |
 | Motor control | In progress |
-| IMU integration | In progress |
 | Teleop (keyboard + Xbox) | Planned |
 | SLAM | Planned |
 | Nav2 integration | Planned |
@@ -181,6 +181,59 @@ Or just open an issue if you have questions or suggestions.
 
 ---
 
+## Sensor Setup
+
+### BNO055 IMU
+
+The BNO055 is a 9-DOF IMU with onboard sensor fusion. It outputs quaternion orientation directly, no external filtering needed.
+
+**Connection:** I2C (default address 0x28)
+
+```bash
+# Install dependency
+pip3 install smbus2
+
+# Test IMU
+ros2 run herm_bringup bno055_imu_node.py --ros-args -p i2c_bus:=7
+```
+
+**Topics:**
+- `/imu/data` (sensor_msgs/Imu) — orientation, angular velocity, linear acceleration at 100Hz
+
+**Mounting:** Orient the BNO055 so its X-axis points forward on the robot (follows REP-103).
+
+### RPLidar A2M12
+
+360-degree laser scanner with 16m range.
+
+**Connection:** USB serial (typically `/dev/ttyUSB0`)
+
+```bash
+# Give permission
+sudo chmod 666 /dev/ttyUSB0
+
+# Test LiDAR
+ros2 run rplidar_ros rplidar_node --ros-args -p serial_port:=/dev/ttyUSB0 -p serial_baudrate:=256000
+```
+
+**Topics:**
+- `/scan` (sensor_msgs/LaserScan) — 360 samples at 10Hz
+
+### Camera (Insta360 Link 2)
+
+Uses GStreamer pipeline because standard V4L2 doesn't handle the MJPEG stream well on Jetson.
+
+```bash
+# Test camera
+ros2 run herm_bringup camera_node.py --ros-args -p device:=/dev/video0
+```
+
+**Topics:**
+- `/camera/image_raw` (sensor_msgs/Image) — 1280x720 at 30fps
+- `/camera/camera_info` (sensor_msgs/CameraInfo)
+
+---
+
 ## Notes
 
 A few things worth knowing:
@@ -188,6 +241,7 @@ A few things worth knowing:
 - The simulation runs on Gazebo Harmonic (the new Gazebo, not Gazebo Classic)
 - On Jetson, the camera uses GStreamer because the Insta360 streams MJPEG and standard V4L2 drivers don't handle it well
 - RPLidar A2M12 needs 256000 baud rate, not the default 115200
+- BNO055 IMU uses I2C bus 7 on Jetson Orin Nano (may vary on other boards)
 
 ---
 
