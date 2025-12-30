@@ -134,10 +134,10 @@ This is an active project. Here's where things stand:
 | Camera integration (GStreamer) | Done |
 | IMU integration (BNO055) | Done |
 | Gazebo Harmonic simulation | Done |
+| SLAM (slam_toolbox) | Done |
+| Nav2 autonomous navigation | Done |
+| Teleop (keyboard + Xbox) | Done |
 | Motor control | In progress |
-| Teleop (keyboard + Xbox) | Planned |
-| SLAM | Planned |
-| Nav2 integration | Planned |
 | Agent collaboration framework | Planned |
 
 ---
@@ -231,6 +231,25 @@ ros2 run herm_bringup camera_node.py --ros-args -p device:=/dev/video0
 **Topics:**
 - `/camera/image_raw` (sensor_msgs/Image) — 1280x720 at 30fps
 - `/camera/camera_info` (sensor_msgs/CameraInfo)
+
+### Xbox Controller
+
+```bash
+# Install joystick packages
+sudo apt install ros-humble-joy ros-humble-teleop-twist-joy
+
+# Launch teleop (on real robot)
+ros2 launch herm_bringup teleop_joy.launch.py
+
+# Launch simulation with Xbox controller
+ros2 launch herm_simulation teleop_joy.launch.py
+```
+
+**Controls:**
+- **Left Stick**: Forward/Backward
+- **Right Stick**: Turn Left/Right
+- **LB (Left Bumper)**: Hold to enable driving (safety deadman switch)
+- **RB (Right Bumper)**: Hold for turbo mode (faster speeds)
 
 ---
 

@@ -1,0 +1,229 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+  - Class: rviz_common/Selection
+    Name: Selection
+  - Class: rviz_common/Tool Properties
+    Name: Tool Properties
+  - Class: rviz_common/Views
+    Name: Views
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Grid
+      Enabled: true
+      Value: true
+      Cell Size: 1
+      Color: 160; 160; 164
+      Line Style:
+        Line Width: 0.03
+        Value: Lines
+      Normal Cell Count: 0
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Plane: XY
+      Plane Cell Count: 20
+      Reference Frame: <Fixed Frame>
+    - Class: rviz_default_plugins/RobotModel
+      Name: RobotModel
+      Enabled: true
+      Value: true
+      Description Topic:
+        Value: /robot_description
+      Alpha: 1
+      Visual Enabled: true
+      Collision Enabled: false
+    - Class: rviz_default_plugins/TF
+      Name: TF
+      Enabled: false
+      Value: false
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+      Marker Scale: 0.3
+      Show Arrows: false
+      Show Axes: true
+      Show Names: false
+    - Class: rviz_default_plugins/LaserScan
+      Name: LaserScan
+      Enabled: true
+      Value: true
+      Topic:
+        Value: /scan
+      Size (m): 0.03
+      Color: 255; 0; 0
+      Style: Flat Squares
+      Alpha: 1
+      Autocompute Intensity Bounds: true
+      Use Fixed Frame: true
+    - Class: rviz_default_plugins/Map
+      Name: Map
+      Enabled: true
+      Value: true
+      Topic:
+        Value: /map
+      Alpha: 0.7
+      Color Scheme: map
+      Draw Behind: true
+      Update Topic:
+        Value: /map_updates
+      Use Timestamp: false
+    - Class: rviz_default_plugins/Map
+      Name: Global Costmap
+      Enabled: true
+      Value: true
+      Topic:
+        Value: /global_costmap/costmap
+      Alpha: 0.5
+      Color Scheme: costmap
+      Draw Behind: false
+      Update Topic:
+        Value: /global_costmap/costmap_updates
+      Use Timestamp: false
+    - Class: rviz_default_plugins/Map
+      Name: Local Costmap
+      Enabled: true
+      Value: true
+      Topic:
+        Value: /local_costmap/costmap
+      Alpha: 0.5
+      Color Scheme: costmap
+      Draw Behind: false
+      Update Topic:
+        Value: /local_costmap/costmap_updates
+      Use Timestamp: false
+    - Class: rviz_default_plugins/Path
+      Name: Global Path
+      Enabled: true
+      Value: true
+      Topic:
+        Value: /plan
+      Color: 0; 255; 0
+      Alpha: 1
+      Line Style: Billboards
+      Line Width: 0.05
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0.05
+      Pose Style: None
+    - Class: rviz_default_plugins/Path
+      Name: Local Path
+      Enabled: true
+      Value: true
+      Topic:
+        Value: /local_plan
+      Color: 255; 255; 0
+      Alpha: 1
+      Line Style: Billboards
+      Line Width: 0.03
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0.05
+      Pose Style: None
+    - Class: rviz_default_plugins/Marker
+      Name: Waypoints
+      Enabled: true
+      Value: true
+      Topic:
+        Value: /waypoints
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Footprint
+      Enabled: true
+      Value: true
+      Topic:
+        Value: /local_costmap/published_footprint
+    - Class: rviz_default_plugins/PoseWithCovariance
+      Name: AMCL Pose
+      Enabled: true
+      Value: true
+      Topic:
+        Value: /amcl_pose
+      Color: 0; 255; 255
+      Alpha: 1
+      Shape: Arrow
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.3
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: true
+    - Class: rviz_default_plugins/Odometry
+      Name: Odometry
+      Enabled: false
+      Value: false
+      Topic:
+        Value: /odom
+      Position Tolerance: 0.1
+      Angle Tolerance: 0.1
+      Keep: 10
+      Shape:
+        Alpha: 1
+        Axes Length: 0.3
+        Axes Radius: 0.03
+        Color: 255; 25; 0
+        Value: Arrow
+  Global Options:
+    Background Color: 48; 48; 48
+    Fixed Frame: map
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz_default_plugins/Interact
+      Hide Inactive Objects: true
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+    - Class: rviz_default_plugins/FocusCamera
+    - Class: rviz_default_plugins/Measure
+      Line color: 128; 128; 0
+    - Class: rviz_default_plugins/SetInitialPose
+      Topic:
+        Value: /initialpose
+    - Class: nav2_rviz_plugins/GoalTool
+      Topic:
+        Value: /goal_pose
+    - Class: rviz_default_plugins/PublishPoint
+      Topic:
+        Value: /clicked_point
+  Value: true
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 15
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.06
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 0
+      Focal Shape Fixed Size: true
+      Focal Shape Size: 0.05
+      Invert Z Axis: false
+      Name: Current View
+      Near Clip Distance: 0.01
+      Pitch: 0.785
+      Target Frame: <Fixed Frame>
+      Value: Orbit (rviz)
+      Yaw: 0.785
+    Saved: ~
+Window Geometry:
+  Height: 1000
+  Width: 1500
+  X: 0
+  Y: 0

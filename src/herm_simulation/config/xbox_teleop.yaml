@@ -1,0 +1,45 @@
+# Xbox Controller Configuration for HERM Robot
+#
+# Controller Layout:
+#   Left Stick  - Linear velocity (forward/backward)
+#   Right Stick - Angular velocity (turn left/right)
+#   LB (Left Bumper) - Enable button (hold to drive)
+#   RB (Right Bumper) - Turbo mode (hold for faster speed)
+#
+# Safety: Robot only moves when LB is held down
+
+teleop_twist_joy_node:
+  ros__parameters:
+    # Axis mappings (Xbox controller on Linux)
+    axis_linear:
+      x: 1  # Left stick vertical (forward/back)
+    axis_angular:
+      yaw: 3  # Right stick horizontal (turn)
+
+    # Scale factors for normal mode
+    scale_linear:
+      x: 0.3  # Max 0.3 m/s forward
+    scale_angular:
+      yaw: 0.5  # Max 0.5 rad/s turn
+
+    # Scale factors for turbo mode (RB held)
+    scale_linear_turbo:
+      x: 0.5  # Max 0.5 m/s forward
+    scale_angular_turbo:
+      yaw: 1.0  # Max 1.0 rad/s turn
+
+    # Button mappings
+    enable_button: 4  # LB - must hold to drive
+    enable_turbo_button: 5  # RB - hold for turbo
+
+    # Require enable button for safety
+    require_enable_button: true
+
+joy_node:
+  ros__parameters:
+    device_id: 0
+    device_name: ""
+    deadzone: 0.1
+    autorepeat_rate: 20.0
+    sticky_buttons: false
+    coalesce_interval_ms: 1
