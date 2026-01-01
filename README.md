@@ -234,22 +234,77 @@ ros2 run herm_bringup camera_node.py --ros-args -p device:=/dev/video0
 
 ### Xbox Controller
 
+#### Bluetooth Setup (Jetson Orin Nano)
+
 ```bash
-# Install joystick packages
-sudo apt install ros-humble-joy ros-humble-teleop-twist-joy
+# Install required packages
+sudo apt install joystick jstest-gtk xboxdrv
 
-# Launch teleop (on real robot)
-ros2 launch herm_bringup teleop_joy.launch.py
+# Disable Bluetooth ERTM (required for Xbox controllers)
+sudo bash -c 'echo 1 > /sys/module/bluetooth/parameters/disable_ertm'
 
-# Launch simulation with Xbox controller
-ros2 launch herm_simulation teleop_joy.launch.py
+# Make permanent
+sudo bash -c 'echo "options bluetooth disable_ertm=1" >> /etc/modprobe.d/bluetooth.conf'
+
+# Pair the controller
+bluetoothctl
+# In bluetoothctl:
+scan on
+# Put controller in pairing mode (Xbox + sync button)
+pair <MAC_ADDRESS>
+trust <MAC_ADDRESS>
+connect <MAC_ADDRESS>
+exit
 ```
 
-**Controls:**
-- **Left Stick**: Forward/Backward
-- **Right Stick**: Turn Left/Right
-- **LB (Left Bumper)**: Hold to enable driving (safety deadman switch)
-- **RB (Right Bumper)**: Hold for turbo mode (faster speeds)
+**Important:** Update the Xbox controller firmware using a Windows PC or Xbox console for stable Bluetooth connection.
+
+#### Testing the Controller
+
+```bash
+# Install ROS2 joystick packages
+sudo apt install ros-humble-joy ros-humble-teleop-twist-joy
+
+# Test raw joystick input
+jstest /dev/input/js0
+
+# Test with ROS2 (simple velocity output)
+source ~/herm_ws/install/setup.bash
+ros2 launch herm_bringup xbox_test.launch.py
+```
+
+The test node shows real-time velocity output:
+```
+[xbox_test_node]: Linear: +0.35 m/s | Angular: +0.00 rad/s
+```
+
+#### Teleop Launch Files
+
+```bash
+# Real robot with safety button (LB to enable)
+ros2 launch herm_bringup teleop_joy.launch.py
+
+# Simulation with Xbox controller
+ros2 launch herm_simulation teleop_joy.launch.py
+
+# Simple test (no safety button)
+ros2 launch herm_bringup xbox_test.launch.py
+```
+
+#### Controls
+
+| Input | Action |
+|-------|--------|
+| Left Stick Y | Forward/Backward |
+| Right Stick X | Turn Left/Right |
+| LB (hold) | Enable driving (safety) |
+| RB (hold) | Turbo mode (faster) |
+
+#### Troubleshooting
+
+- **LED keeps blinking:** Controller not fully paired. Run `bluetoothctl trust <MAC>` and reconnect
+- **No input detected:** Check `ros2 topic echo /joy` to verify data is being published
+- **Controller disconnects:** Update controller firmware and ensure ERTM is disabled
 
 ---
 
