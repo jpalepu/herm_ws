@@ -308,6 +308,17 @@ ros2 launch herm_bringup xbox_test.launch.py
 
 ---
 
+## Troubleshooting
+
+See [ERRORS.md](ERRORS.md) for a comprehensive list of common errors and fixes, including:
+- ROS2 launch and build errors
+- Xbox controller connection issues
+- Serial/I2C device problems
+- Camera and LiDAR troubleshooting
+- Gazebo simulation fixes
+
+---
+
 ## Notes
 
 A few things worth knowing:
