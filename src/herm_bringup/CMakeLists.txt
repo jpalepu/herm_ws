@@ -20,6 +20,7 @@ install(PROGRAMS
   scripts/mpu_imu_driver.py
   scripts/bno055_imu_node.py
   scripts/camera_node.py
+  scripts/xbox_test_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
