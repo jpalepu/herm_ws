@@ -21,6 +21,7 @@ install(PROGRAMS
   scripts/bno055_imu_node.py
   scripts/camera_node.py
   scripts/xbox_test_node.py
+  scripts/xbox_motor_test.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

@@ -10,7 +10,8 @@ A troubleshooting guide for common issues encountered while working with the HER
 
 **Error:**
 ```
-[ERROR] [launch]: Caught exception in launch (see debug for traceback): executable 'camera_node.py' not found on the libexec directory '/home/user/herm_ws/install/herm_bringup/lib/herm_bringup'
+[ERROR] [launch]: Caught exception in launch (see debug for traceback): executable 'camera_node.py' not found on the libexec directory '/home/user/herm_ws/install/herm_bringup/lib/herm_bringup'  ros2 launch herm_bringup sensors_test.launch.py
+
 ```
 
 **Cause:** Python scripts are not marked as executable.
