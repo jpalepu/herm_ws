@@ -22,6 +22,7 @@ install(PROGRAMS
   scripts/camera_node.py
   scripts/xbox_test_node.py
   scripts/xbox_motor_test.py
+  scripts/l298n_driver.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
