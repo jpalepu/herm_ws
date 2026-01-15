@@ -33,7 +33,8 @@ HERM is a 4-wheeled skid-steer mobile robot with a layered platform design. It's
 | Component | What We're Using |
 |-----------|------------------|
 | Compute | NVIDIA Jetson Orin Nano |
-| Motors | Hiwonder 4-channel encoder motor driver |
+| Motor Driver | L298N + Arduino Nano (serial bridge) |
+| Motors | 25GA-371 DC motors with encoders |
 | LiDAR | RPLidar A2M12 (360°, 16m range) |
 | Camera | Insta360 Link 2 (webcam, 1280x720) |
 | IMU | BNO055 (9-DOF with onboard fusion) |
@@ -137,7 +138,7 @@ This is an active project. Here's where things stand:
 | SLAM (slam_toolbox) | Done |
 | Nav2 autonomous navigation | Done |
 | Teleop (keyboard + Xbox) | Done |
-| Motor control | In progress |
+| Motor control (L298N + encoders) | Done |
 | Agent collaboration framework | Planned |
 
 ---
@@ -305,6 +306,50 @@ ros2 launch herm_bringup xbox_test.launch.py
 - **LED keeps blinking:** Controller not fully paired. Run `bluetoothctl trust <MAC>` and reconnect
 - **No input detected:** Check `ros2 topic echo /joy` to verify data is being published
 - **Controller disconnects:** Update controller firmware and ensure ERTM is disabled
+
+### L298N Motor Driver
+
+The robot uses an L298N motor driver controlled via Arduino Nano over serial.
+
+**Wiring:**
+
+| L298N | Arduino Nano |
+|-------|--------------|
+| ENA | D5 |
+| IN1 | D2 |
+| IN2 | D3 |
+| ENB | D6 |
+| IN3 | D4 |
+| IN4 | D7 |
+| GND | GND |
+
+| Motor Encoder | Arduino Nano |
+|---------------|--------------|
+| Left Encoder A | D8 |
+| Left Encoder B | D9 |
+| Right Encoder A | D10 |
+| Right Encoder B | D11 |
+| Encoder 3.3V | 3.3V |
+| Encoder GND | GND |
+
+**Power:** Connect 11.1V LiPo to L298N +12V and GND terminals.
+
+**Arduino Firmware:** Upload the firmware from `~/arduino/motor_bridge/motor_bridge.ino`
+
+```bash
+arduino-cli upload -p /dev/ttyCH341USB0 -b arduino:avr:nano ~/arduino/motor_bridge/
+```
+
+**Testing Motors with Xbox Controller:**
+
+```bash
+source ~/herm_ws/install/setup.bash
+ros2 launch herm_bringup l298n_simple.launch.py
+```
+
+Controls (no buttons needed):
+- Left stick up/down: Forward/Backward
+- Right stick left/right: Turn
 
 ---
 
