@@ -16,8 +16,8 @@ class XboxTestNode(Node):
         super().__init__('xbox_test_node')
 
         # Speed limits
-        self.max_linear = 0.5  # m/s
-        self.max_angular = 1.0  # rad/s
+        self.max_linear = 1.0  # m/s
+        self.max_angular = 2.0  # rad/s
 
         # Publisher
         self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel', 10)
