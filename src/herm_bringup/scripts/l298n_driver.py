@@ -55,6 +55,10 @@ class L298NDriver(Node):
         self.last_right_count = 0
         self.last_time = self.get_clock().now()
 
+        # Wheel positions for visualization (radians)
+        self.left_wheel_pos = 0.0
+        self.right_wheel_pos = 0.0
+
         # Publishers
         self.odom_pub = self.create_publisher(Odometry, 'odom', 10)
         self.joint_pub = self.create_publisher(JointState, 'joint_states', 10)
@@ -164,6 +168,10 @@ class L298NDriver(Node):
         dist_left = (delta_left / self.encoder_cpr) * (2 * math.pi * self.wheel_radius)
         dist_right = (delta_right / self.encoder_cpr) * (2 * math.pi * self.wheel_radius)
 
+        # Update wheel positions (radians) for visualization
+        self.left_wheel_pos += dist_left / self.wheel_radius
+        self.right_wheel_pos += dist_right / self.wheel_radius
+
         # Calculate robot movement
         dist_center = (dist_left + dist_right) / 2.0
         delta_theta = (dist_right - dist_left) / self.wheel_separation
@@ -205,12 +213,14 @@ class L298NDriver(Node):
             t.transform.rotation = odom.pose.pose.orientation
             self.tf_broadcaster.sendTransform(t)
 
-        # Joint states
+        # Joint states - actual wheel positions for visualization
         joint_state = JointState()
         joint_state.header.stamp = current_time.to_msg()
-        joint_state.name = ['left_wheel_joint', 'right_wheel_joint']
-        joint_state.position = [0.0, 0.0]
-        joint_state.velocity = [0.0, 0.0]
+        joint_state.name = ['front_left_wheel_joint', 'front_right_wheel_joint',
+                           'rear_left_wheel_joint', 'rear_right_wheel_joint']
+        joint_state.position = [self.left_wheel_pos, self.right_wheel_pos,
+                               self.left_wheel_pos, self.right_wheel_pos]
+        joint_state.velocity = []
         self.joint_pub.publish(joint_state)
 
     def stop_motors(self):

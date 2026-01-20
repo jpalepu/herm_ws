@@ -3,6 +3,7 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, TimerAction
+from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
@@ -63,6 +64,12 @@ def generate_launch_description():
         'motor_port',
         default_value='/dev/ttyCH341USB0',
         description='Motor driver serial port'
+    )
+
+    use_rviz_arg = DeclareLaunchArgument(
+        'use_rviz',
+        default_value='true',
+        description='Launch RViz (set false for headless/remote)'
     )
 
     # Robot State Publisher
@@ -199,7 +206,8 @@ def generate_launch_description():
                 executable='rviz2',
                 name='rviz2',
                 output='log',
-                arguments=['-d', rviz_config]
+                arguments=['-d', rviz_config],
+                condition=IfCondition(LaunchConfiguration('use_rviz'))
             )
         ]
     )
@@ -208,6 +216,7 @@ def generate_launch_description():
         map_arg,
         lidar_port_arg,
         motor_port_arg,
+        use_rviz_arg,
         robot_state_pub,
         joint_state_pub,
         l298n_driver,
