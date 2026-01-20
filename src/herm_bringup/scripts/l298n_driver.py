@@ -29,7 +29,7 @@ class L298NDriver(Node):
         # Parameters
         self.declare_parameter('serial_port', '/dev/ttyCH341USB0')
         self.declare_parameter('baud_rate', 115200)
-        self.declare_parameter('wheel_radius', 0.065)
+        self.declare_parameter('wheel_radius', 0.0335)  # 67mm diameter
         self.declare_parameter('wheel_separation', 0.34)
         self.declare_parameter('encoder_cpr', 1320)  # Counts per revolution
         self.declare_parameter('max_rpm', 330)

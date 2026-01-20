@@ -4,7 +4,7 @@ hiwonder_driver:
   ros__parameters:
     serial_port: "/dev/ttyUSB0"
     baud_rate: 115200
-    wheel_radius: 0.065
+    wheel_radius: 0.0335  # 67mm diameter
     wheel_separation: 0.34
     wheelbase: 0.30
     max_rpm: 330

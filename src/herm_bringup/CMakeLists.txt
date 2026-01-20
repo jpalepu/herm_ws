@@ -23,6 +23,7 @@ install(PROGRAMS
   scripts/xbox_test_node.py
   scripts/xbox_motor_test.py
   scripts/l298n_driver.py
+  scripts/odom_test_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

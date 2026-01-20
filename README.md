@@ -44,7 +44,7 @@ HERM is a 4-wheeled skid-steer mobile robot with a layered platform design. It's
 | Spec | Value |
 |------|-------|
 | Chassis | 40 x 30 x 8 cm |
-| Wheel Radius | 6.5 cm |
+| Wheel Radius | 3.35 cm (67mm diameter) |
 | Track Width | 34 cm |
 | Wheelbase | 30 cm |
 | Total Height | ~30 cm |
@@ -350,6 +350,206 @@ ros2 launch herm_bringup l298n_simple.launch.py
 Controls (no buttons needed):
 - Left stick up/down: Forward/Backward
 - Right stick left/right: Turn
+
+---
+
+## SLAM and Autonomous Navigation
+
+This section covers mapping your environment and setting up autonomous navigation with Nav2.
+
+### Prerequisites - Install Nav2
+
+```bash
+sudo apt update
+sudo apt install ros-humble-navigation2 ros-humble-nav2-bringup ros-humble-slam-toolbox
+```
+
+### Step 1: Build a Map (SLAM)
+
+Before autonomous navigation, you need a map of your environment.
+
+**Terminal 1 - Launch SLAM (keep running):**
+```bash
+source ~/herm_ws/install/setup.bash
+ros2 launch herm_bringup slam_test.launch.py
+```
+
+This launches:
+- Motor driver with odometry
+- Xbox controller for manual driving
+- RPLidar for laser scans
+- SLAM Toolbox for mapping
+- RViz for visualization
+
+**How to map:**
+1. Wait for RViz to open
+2. Drive slowly around your space using Xbox controller (left stick)
+3. Watch the map build in real-time (gray = explored, black = walls)
+4. Cover the entire area you want the robot to navigate
+
+**Terminal 2 - Save the map (when done exploring):**
+```bash
+mkdir -p ~/maps
+ros2 run nav2_map_server map_saver_cli -f ~/maps/my_home
+```
+
+This creates:
+- `~/maps/my_home.pgm` - The map image
+- `~/maps/my_home.yaml` - Map metadata
+
+**Important:** Keep Terminal 1 running while saving. Don't close SLAM until the map is saved.
+
+---
+
+### Step 2: Autonomous Navigation (Nav2)
+
+Once you have a map, the robot can navigate autonomously.
+
+**Terminal 1 - Launch Navigation:**
+```bash
+source ~/herm_ws/install/setup.bash
+ros2 launch herm_bringup navigation.launch.py map:=/home/jithin/maps/my_home.yaml
+```
+
+This launches:
+- Motor driver (for movement)
+- RPLidar (for obstacle detection)
+- Map server (loads your saved map)
+- AMCL (localization - figures out where robot is)
+- Nav2 stack (path planning + control)
+- RViz (visualization + goal setting)
+
+**How to navigate:**
+
+| Step | Action |
+|------|--------|
+| 1 | Wait for terminal to show "All nodes are active" |
+| 2 | In RViz, click **"2D Pose Estimate"** button |
+| 3 | Click on map where robot actually is, drag arrow for heading |
+| 4 | Click **"2D Goal Pose"** button |
+| 5 | Click where you want robot to go, drag arrow for final orientation |
+| 6 | Watch robot navigate autonomously! |
+
+**What you see in RViz:**
+
+| Color | Meaning |
+|-------|---------|
+| Gray | Map (free space) |
+| Black | Walls/obstacles from map |
+| Red dots | Live LiDAR scan |
+| Green line | Global planned path |
+| Yellow line | Local path being followed |
+| Purple/pink overlay | Costmap (inflation around obstacles) |
+
+---
+
+### Adjusting Navigation Speed
+
+Edit the file `src/herm_bringup/config/nav2_params.yaml`:
+
+**Controller velocities (main speed settings):**
+```yaml
+controller_server:
+  ros__parameters:
+    FollowPath:
+      min_vel_x: 0.22      # Minimum forward speed (m/s)
+      max_vel_x: 0.75      # Maximum forward speed (m/s)
+      max_vel_theta: 3.0   # Maximum rotation speed (rad/s)
+      min_speed_xy: 0.22   # Minimum linear speed
+      max_speed_xy: 0.75   # Maximum linear speed
+      min_speed_theta: 0.6 # Minimum rotation speed
+```
+
+**Velocity smoother (acceleration limits):**
+```yaml
+velocity_smoother:
+  ros__parameters:
+    max_velocity: [0.75, 0.0, 3.0]    # [linear_x, linear_y, angular_z]
+    min_velocity: [-0.75, 0.0, -3.0]  # For reverse
+    max_accel: [3.0, 0.0, 6.0]        # Acceleration limits
+    max_decel: [-3.0, 0.0, -6.0]      # Deceleration limits
+```
+
+**After editing, rebuild:**
+```bash
+cd ~/herm_ws
+colcon build --packages-select herm_bringup --symlink-install
+source install/setup.bash
+```
+
+**Speed recommendations:**
+
+| Environment | max_vel_x | max_vel_theta |
+|-------------|-----------|---------------|
+| Tight indoor | 0.3 | 1.5 |
+| Normal indoor | 0.5 | 2.0 |
+| Open space | 0.75 | 3.0 |
+| Fast (be careful!) | 1.0 | 4.0 |
+
+---
+
+### Quick Reference - All Commands
+
+**SLAM (mapping):**
+```bash
+# Terminal 1: Launch SLAM
+source ~/herm_ws/install/setup.bash
+ros2 launch herm_bringup slam_test.launch.py
+
+# Terminal 2: Save map (while SLAM is running)
+ros2 run nav2_map_server map_saver_cli -f ~/maps/my_home
+```
+
+**Navigation:**
+```bash
+# Single terminal - launch everything
+source ~/herm_ws/install/setup.bash
+ros2 launch herm_bringup navigation.launch.py map:=/home/jithin/maps/my_home.yaml
+```
+
+**Useful debug commands (run in separate terminal):**
+```bash
+# Check if velocity commands are being sent
+ros2 topic echo /cmd_vel
+
+# Check robot's estimated position
+ros2 topic echo /amcl_pose
+
+# Check if path is planned
+ros2 topic echo /plan
+
+# List all active topics
+ros2 topic list
+
+# Check Nav2 node status
+ros2 lifecycle list /bt_navigator
+```
+
+---
+
+### Troubleshooting Navigation
+
+| Problem | Solution |
+|---------|----------|
+| "Empty Tree" error | Behavior tree not found - make sure nav2_params.yaml has correct BT path |
+| Robot doesn't move | Check `/cmd_vel` topic. If values show, increase `min_vel_x` |
+| Motor sounds but no movement | Velocities too low - increase min speeds in nav2_params.yaml |
+| "Fixed frame map does not exist" | Wait for map_server to load, or check map file path |
+| TF errors at startup | Normal during initialization - wait a few seconds |
+| Path planning fails | Goal might be in obstacle. Try different location |
+| Robot spins in place | Set initial pose with "2D Pose Estimate" first |
+| AMCL not localizing | Drive robot around a bit to help particle filter converge |
+
+---
+
+### Launch File Reference
+
+| Launch File | Purpose |
+|-------------|---------|
+| `slam_test.launch.py` | SLAM mapping with Xbox teleop |
+| `navigation.launch.py` | Autonomous navigation with Nav2 |
+| `odom_test.launch.py` | Test/calibrate odometry |
+| `l298n_simple.launch.py` | Simple motor test with Xbox |
 
 ---
 
